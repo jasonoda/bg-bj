@@ -32,6 +32,10 @@ export class Input {
               console.log(this.e.scene.matchLock1)
               console.log(this.e.scene.matchLock2)
   
+          } else if (event.key === "q" || event.key === "Q") {
+
+            this.e.scene.gameTime = 2;
+  
           }
   
         });

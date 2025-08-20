@@ -36,18 +36,18 @@ export class Scene {
         this.updateTimer();
         
         // Ensure timer is visible from the start
-        const timerDiv = document.getElementById('timerDiv');
-        if (timerDiv) {
-            timerDiv.style.opacity = '1';
-            timerDiv.style.visibility = 'visible';
-            timerDiv.style.display = 'block';
-            console.log('Timer initialized with:', timerDiv.textContent);
+        const upperRightText = document.getElementById('upperRightText');
+        if (upperRightText) {
+            upperRightText.style.opacity = '1';
+            upperRightText.style.visibility = 'visible';
+            upperRightText.style.display = 'block';
+            console.log('Timer initialized with:', upperRightText.textContent);
         }
         
         // Initialize score display
-        const scoreDiv = document.getElementById('scoreDiv');
-        if (scoreDiv) {
-            scoreDiv.textContent = '0';
+        const upperLeftText = document.getElementById('upperLeftText');
+        if (upperLeftText) {
+            upperLeftText.textContent = '0';
         }
         
         // Initialize bonus displays
@@ -97,9 +97,7 @@ export class Scene {
             newPlayButton.addEventListener('click', () => {
                 console.log('Play button clicked');
                 this.e.s.p('brightClick');
-                this.gameAction = "new round";
-                document.getElementById('startMenu').style.display = 'none';
-                document.getElementById('gameContainer').style.display = 'flex';
+                this.startCountdownSequence();
             });
         }
 
@@ -172,7 +170,7 @@ export class Scene {
                     const finalPoints = Math.floor(basePoints * this.bonusMult);
                     this.score += finalPoints;
                     this.multBonus += (finalPoints - basePoints);
-                    document.getElementById('scoreDiv').textContent = this.score;
+                    document.getElementById('upperLeftText').textContent = this.score;
                     console.log('Score updated to:', this.score);
                     
                     // Create score callout
@@ -236,6 +234,96 @@ export class Scene {
         }
     }
 
+    startCountdownSequence() {
+        // Fade out splash screen
+        const startMenu = document.getElementById('startMenu');
+        const startMenuContainer = document.getElementById('startMenuContainer');
+        
+        if (startMenuContainer) {
+            startMenuContainer.style.transition = 'opacity 0.5s ease-out';
+            startMenuContainer.style.opacity = '0';
+            
+            setTimeout(() => {
+                // Hide start menu
+                if (startMenu) {
+                    startMenu.style.display = 'none';
+                }
+                
+                // Show game container
+                const gameContainer = document.getElementById('gameContainer');
+                if (gameContainer) {
+                    gameContainer.style.display = 'flex';
+                    gameContainer.style.opacity = '0';
+                    
+                    // Create countdown overlay
+                    const countdownOverlay = document.createElement('div');
+                    countdownOverlay.id = 'countdownOverlay';
+                    countdownOverlay.style.cssText = `
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        background: rgba(0, 0, 0, 0.8);
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        z-index: 1000;
+                        opacity: 0;
+                        transition: opacity 0.3s ease-in;
+                    `;
+                    
+                    const countdownText = document.createElement('div');
+                    countdownText.style.cssText = `
+                        color: #f8b500;
+                        font-size: 120px;
+                        font-weight: bold;
+                        font-family: "Olympus Mount", sans-serif;
+                    `;
+                    
+                    countdownOverlay.appendChild(countdownText);
+                    document.body.appendChild(countdownOverlay);
+                    
+                    // Fade in countdown overlay
+                    setTimeout(() => {
+                        countdownOverlay.style.opacity = '1';
+                        
+                        // Start countdown: 3, 2, 1
+                        let count = 3;
+                        const countdown = () => {
+                            if (count > 0) {
+                                countdownText.textContent = count;
+                                this.e.s.p('tick');
+                                count--;
+                                setTimeout(countdown, 1000);
+                            } else {
+                                // Countdown complete, fade out overlay
+                                countdownOverlay.style.opacity = '0';
+                                setTimeout(() => {
+                                    document.body.removeChild(countdownOverlay);
+                                    
+                                    // Fade in game container
+                                    gameContainer.style.transition = 'opacity 0.5s ease-in';
+                                    gameContainer.style.opacity = '1';
+                                    
+                                    // Wait 1 second, then start game
+                                    setTimeout(() => {
+                                        this.gameAction = "new round";
+                                    }, 1000);
+                                    
+                                }, 300);
+                            }
+                        };
+                        
+                        countdown();
+                        
+                    }, 300);
+                }
+                
+            }, 500);
+        }
+    }
+
     update() {
         
         if(this.action==="set up"){
@@ -258,10 +346,10 @@ export class Scene {
                 // Waiting for play button to be clicked
                 this.updateTimer();
                 // Ensure timer is visible
-                const timerDiv = document.getElementById('timerDiv');
-                if (timerDiv) {
-                    timerDiv.style.opacity = '1';
-                    timerDiv.style.visibility = 'visible';
+                const upperRightText = document.getElementById('upperRightText');
+                if (upperRightText) {
+                    upperRightText.style.opacity = '1';
+                    upperRightText.style.visibility = 'visible';
                 }
             }else if(this.gameAction==="new round"){
 
@@ -364,9 +452,9 @@ export class Scene {
                 
                 // Subtract 200 points for bust
                 this.score = Math.max(0, this.score - 200);
-                const scoreDiv = document.getElementById('scoreDiv');
-                if (scoreDiv) {
-                    scoreDiv.textContent = this.score;
+                const upperLeftText = document.getElementById('upperLeftText');
+                if (upperLeftText) {
+                    upperLeftText.textContent = this.score;
                 }
                 
                 // Track bust
@@ -471,9 +559,9 @@ export class Scene {
                 
                 // Only subtract 200 points if player busted (not if they stayed)
                 // The score is already calculated in the stay button click handler
-                const scoreDiv = document.getElementById('scoreDiv');
-                if (scoreDiv) {
-                    scoreDiv.textContent = this.score;
+                const upperLeftText = document.getElementById('upperLeftText');
+                if (upperLeftText) {
+                    upperLeftText.textContent = this.score;
                 }
                 
                 // Re-enable buttons
@@ -501,13 +589,13 @@ export class Scene {
     updateTimer() {
         const minutes = Math.floor(this.gameTime / 60);
         const seconds = Math.floor(this.gameTime % 60);
-        const timerDiv = document.getElementById('timerDiv');
+        const upperRightText = document.getElementById('upperRightText');
         // console.log('updateTimer called, gameTime:', this.gameTime, 'minutes:', minutes, 'seconds:', seconds);
-        if (timerDiv) {
-            timerDiv.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-            timerDiv.style.opacity = '1';
-            timerDiv.style.visibility = 'visible';
-            // console.log('Timer updated to:', timerDiv.textContent);
+        if (upperRightText) {
+            upperRightText.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            upperRightText.style.opacity = '1';
+            upperRightText.style.visibility = 'visible';
+            // console.log('Timer updated to:', upperRightText.textContent);
         } else {
             console.log('Timer div not found');
         }
@@ -678,36 +766,21 @@ export class Scene {
             bonusBackground.style.display = 'none';
         }
         
-        // Calculate total rounds for percentage calculation
-        const totalRounds = this.score21 + this.score20 + this.score19 + this.score18 + this.score17 + this.score16;
+        // Create stats array for the endScore system
+        const statsArray = [
+            ['21', this.score21],
+            ['20', this.score20],
+            ['19', this.score19],
+            ['18', this.score18],
+            ['17', this.score17],
+            ['16', this.score16],
+            ['CARD POINTS', this.cardPoints],
+            ['MULT BONUS', this.multBonus],
+            ['BUSTS', this.bustCount]
+        ];
         
-        // Update final score breakdown
-        document.getElementById('score21').textContent = this.score21;
-        document.getElementById('score20').textContent = this.score20;
-        document.getElementById('score19').textContent = this.score19;
-        document.getElementById('score18').textContent = this.score18;
-        document.getElementById('score17').textContent = this.score17;
-        document.getElementById('score16').textContent = this.score16;
-        document.getElementById('cardPoints').textContent = this.cardPoints;
-        document.getElementById('multBonus').textContent = this.multBonus;
-        document.getElementById('bustCount').textContent = this.bustCount;
-        document.getElementById('scoreDiv2').textContent = this.score;
-        
-        // Update progress bars
-        if (totalRounds > 0) {
-            document.getElementById('progress21').style.height = (this.score21 / totalRounds * 100) + '%';
-            document.getElementById('progress20').style.height = (this.score20 / totalRounds * 100) + '%';
-            document.getElementById('progress19').style.height = (this.score19 / totalRounds * 100) + '%';
-            document.getElementById('progress18').style.height = (this.score18 / totalRounds * 100) + '%';
-            document.getElementById('progress17').style.height = (this.score17 / totalRounds * 100) + '%';
-            document.getElementById('progress16').style.height = (this.score16 / totalRounds * 100) + '%';
-        }
-        
-        // Show final score screen
-        const finalDiv = document.getElementById('finalDiv');
-        if (finalDiv) {
-            finalDiv.style.display = 'flex';
-        }
+        // Use the new endScore system
+        this.e.endScore.createFinalScoreOverlay(this.score, statsArray);
     }
 
     // Animate card in

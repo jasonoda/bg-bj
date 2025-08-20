@@ -216,15 +216,7 @@ body::before {
         position: fixed;
     }
     
-    #bonusDiv {
-        bottom: 0;
-        padding-bottom: env(safe-area-inset-bottom);
-        position: fixed;
-    }
-    
-    #topDiv {
-        padding-top: env(safe-area-inset-top);
-    }
+
 }
 
 @media (max-width: 768px) {
@@ -263,11 +255,7 @@ body::before {
         position: fixed;
     }
     
-    #bonusDiv {
-        bottom: 0;
-        padding-bottom: env(safe-area-inset-bottom);
-        position: fixed;
-    }
+
 }
 
 .card-back, .card-front {
@@ -594,7 +582,7 @@ body::before {
     z-index: 3001;
 }
 
-#scoreDiv{
+#upperLeftText{
     top: 5px;
     left: 10px;
     color: white;
@@ -605,7 +593,7 @@ body::before {
     z-index: 9001;
 }
 
-#timerDiv{
+#upperRightText{
     position: absolute;
     top: 5px;
     right: 10px;
@@ -640,20 +628,6 @@ body::before {
     display: inline-block;
     width: auto;
     min-width: fit-content;
-}
-
-#topDiv{
-    position: absolute;
-    width: 100%;
-    height: 25px;
-    z-index: 2000;
-    background: linear-gradient(to bottom, #1ac07d, #1a6d4b);
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    font-family: "Montserrat", sans-serif;
-    top: 0px;
 }
 
 #bonusDisplay{
@@ -767,19 +741,7 @@ body::before {
     transform: scaleY(0);
 }
 
-#bonusDiv{
-    position: absolute;
-    width: 100%;
-    height: 25px;
-    z-index: 2000;
-    background: linear-gradient(to bottom, #1ac07d, #1a6d4b);
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    font-family: "Montserrat", sans-serif;
-    bottom: 0px;
-}
+
 
 #bonusButtonContainer{
     position: fixed;
@@ -806,126 +768,16 @@ body::before {
     transform: scale(1.1);
 }
 
-#startMenu {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 9000;
-}
 
-#startMenuContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2px;
-    transition: opacity 0.5s ease-out;
-}
 
-#splashImage {
-    width: 300px;
-    height: auto;
-    max-width: 80vw;
-    opacity: 0;
-}
 
-#playButton {
-    background: linear-gradient(to bottom, #1ac07d, #1a6d4b);
-    color: white;
-    font-size: 24px;
-    font-weight: bold;
-    font-family: "Montserrat", sans-serif;
-    letter-spacing: 2px;
-    padding: 5px 40px;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    border: 2px solid rgba(255, 255, 255, 1);
-    text-align: center;
-    min-width: 120px;
-    animation: playButtonGlow 2s ease-in-out infinite;
-    box-shadow: 0 0 10px rgba(26, 192, 125, 0.3);
-}
 
-@keyframes playButtonGlow {
-    0%, 100% {
-        transform: scale(1);
-        box-shadow: 0 0 10px rgba(26, 192, 125, 0.3);
-    }
-    50% {
-        transform: scale(1.02);
-        box-shadow: 0 0 20px rgba(26, 192, 125, 0.6);
-    }
-}
 
-#playButton:hover {
-    transform: scale(1.05);
-    background: linear-gradient(to bottom, #1ac07d, #1a6d4b);
-    border-color: rgba(255, 255, 255, 0.5);
-}
 
-#instructionsButton {
-    color: #4caf50;
-    font-size: 14px;
-    font-weight: bold;
-    font-family: "Montserrat", sans-serif;
-    letter-spacing: 2px;
-    padding: 15px 30px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-align: center;
-    min-width: 120px;
-}
 
-#instructionsButton:hover {
-    transform: scale(1.05);
-}
-
-#instructionsOverlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.9);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 10000;
-}
-
-#instructionsContainer {
-    background: rgba(0, 0, 0, 0.95);
-    color: white;
-    padding: 40px;
-    /* border-radius: 15px; */
-    max-width: 500px;
-    width: 90%;
-    text-align: center;
-    font-family: "Montserrat", sans-serif;
-}
-
-#instructionsTitle {
-    font-size: 28px;
-    font-weight: bold;
-    color: #f8b500;
-    margin-bottom: 20px;
-    letter-spacing: 2px;
-}
 
 #instructionsText {
     margin-bottom: 20px;
-}
-
-.instructionLine {
-    font-size: 16px;
-    margin-bottom: 6px;
-    color: #cccccc;
-    text-transform: lowercase;
 }
 
 #cardImages {
@@ -933,13 +785,6 @@ body::before {
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-.instructionDivider {
-    height: 1px;
-    background: rgba(255, 255, 255, 0.2);
-    margin: 6px 0;
-    width: 100%;
 }
 
 #bonusInstructions {
@@ -967,23 +812,6 @@ body::before {
     color: #1abe7c;
     text-align: left;
     flex: 1;
-}
-
-#closeInstructionsButton {
-    color: white;
-    font-size: 16px;
-    font-weight: bold;
-    font-family: "Montserrat", sans-serif;
-    letter-spacing: 2px;
-    padding: 5px 5px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-align: center;
-    display: inline-block;
-}
-
-#closeInstructionsButton:hover {
-    transform: scale(1.05);
 }
 
 #scorePopup{
@@ -1059,6 +887,7 @@ body::before {
     /* margin-top: 40px; */
     padding-top: 40px;
     z-index: 10;
+    opacity: 0;
     /* border: 1px solid blue; */
 }
 
@@ -1158,6 +987,31 @@ body::before {
 #stayButton:hover {
     background: linear-gradient(135deg, #ff6666 0%, #ff4444 50%, #ff6666 100%);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* ------------------------------------------------------------------------------------------------------------- */
+/* ------------------------------------------------------------------------------------------------------------- */
+/* ------------------------------------------------------------------------------------------------------------- */
+/* ------------------------------------------------------------------------------------------------------------- */
+/* ------------------------------------------------------------------------------------------------------------- */
+/* ------------------------------------------------------------------------------------------------------------- */
+
+/* COLOR GRAPHICS  */
+
+#playButton {
+    background: linear-gradient(to bottom, #1ac07d, #1a6d4b);
+}
+
+#instructionsButton {
+    color: #4caf50;
+}
+
+#playButton {
+    color: white;
+}
+
+#topDiv, #bonusDiv {
+    background: linear-gradient(to bottom, #1ac07d, #1a6d4b);
 }
 
 

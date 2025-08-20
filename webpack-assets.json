@@ -1,9 +1,8 @@
 {
   "index": {
-    "js": "index-bundle-f70ce7a791a93efa15de.js"
+    "js": "index-bundle-629a56dace4b458359e9.js"
   },
   "": {
-    "js": "570-bundle-f70ce7a791a93efa15de.js",
     "mp3": [
       "src/sounds/introMusic.mp3",
       "src/sounds/softBoom.mp3",
@@ -39,6 +38,10 @@
       "src/sounds/flip2.mp3",
       "src/sounds/place.mp3",
       "src/sounds/click.mp3"
+    ],
+    "png": [
+      "src/images/splashImage.png",
+      "src/images/background.png"
     ],
     "jpg": "src/images/cardBack.jpg",
     "svg": [
@@ -104,13 +107,13 @@
       "src/images/cards/1B.svg",
       "src/images/cards/2B.svg"
     ],
-    "png": [
-      "src/images/background.png",
-      "src/images/splashImage.png"
-    ],
     "ttf": "661aebe2b21204b02d9e.ttf",
-    "html": "game.html",
+    "html": [
+      "game.html",
+      "index.html"
+    ],
     "css": "edb23d6982e7f80d060d.css",
-    "ini": "src/sounds/desktop.ini"
+    "ini": "src/sounds/desktop.ini",
+    "js": "src_starScores_json-bundle-629a56dace4b458359e9.js"
   }
 }

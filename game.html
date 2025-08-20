@@ -5,12 +5,13 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>Title</title>
+    <title>21 Turbo</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&display=swap&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="src/main.css">
 
     <!--meta---------------------------------------------------------------------------------------------------------- -->
@@ -26,6 +27,15 @@
     </script>
 
     <script>
+      // Font loading check
+      document.fonts.ready.then(function() {
+        console.log('All fonts loaded successfully');
+        document.documentElement.classList.add('fonts-loaded');
+      }).catch(function(error) {
+        console.warn('Some fonts failed to load:', error);
+        document.documentElement.classList.add('fonts-fallback');
+      });
+
       window.addEventListener("load", (event) => {
         window.parent.postMessage(
           JSON.stringify({
@@ -47,15 +57,25 @@
 
     <div id="hideMe"><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br></div>
 
+    <!-- loading -->
+
+    <div id="loadingImage"></div>
+    <div id="loadingBack"></div>
+
     <div id="feedback">Memory Game</div>
 
-    <!-- Additional UI Elements -->
+    <div id="fader"></div>
+    <div id="faderBlack"></div>
+
+    <div id="topDiv"></div>
+    <div id="bonusDiv"></div>
+
+    <div class="ui" id="upperLeftText"></div>
+    <div class="ui" id="upperRightText">2:30</div>
     <div class="ui" id="levelDiv">LEVEL: 1</div>
-    <div class="ui" id="scoreDiv"></div>
-    <div class="ui" id="timerDiv">2:30</div>
+
     <div id="scorePopup">+100</div>
 
-    <!-- Debug Div -->
     <div id="debugDiv" style="position: fixed; top: 10px; left: 10px; background: rgba(0,0,0,0.8); color: white; padding: 10px; font-family: monospace; font-size: 12px; z-index: 10000; border: 1px solid white; display: none;">
         <div>Matches: <span id="debugMatches">0</span></div>
         <div>Base Score: <span id="debugBaseScore">0</span></div>
@@ -66,16 +86,8 @@
 
     <div id="bonusBackground"></div>
 
-    <div id="topDiv">
-    </div>
+    <div id="bonusButtonContainer"></div>
 
-    <div id="bonusDiv">
-    </div>
-
-    <div id="bonusButtonContainer">
-    </div>
-
-    <!-- Start Menu -->
     <div id="startMenu">
         <div id="startMenuContainer">
             <img id="splashImage" src="src/images/splashImage.png" alt="Splash">
@@ -84,7 +96,6 @@
         </div>
     </div>
 
-    <!-- Instructions Overlay -->
     <div id="instructionsOverlay" style="display: none;">
         <div id="instructionsContainer">
             <div id="instructionsTitle">INSTRUCTIONS</div>
@@ -109,114 +120,22 @@
                 <div class="instructionLine">earn a bonus score multiplier by going many rounds without busting</div>
             </div>
             
-            
-            
-            <!-- <div id="bonusInstructions">
-                <div class="bonusItem">
-                    <img src="src/images/bonus_clock.png" alt="Clock Bonus" class="bonusImage">
-                    <div class="bonusDescription">stops time for 10 seconds</div>
-                </div>
-                <div class="bonusItem">
-                    <img src="src/images/bonus_eye.png" alt="Eye Bonus" class="bonusImage">
-                    <div class="bonusDescription">peak at all cards for a second</div>
-                </div>
-                <div class="bonusItem">
-                    <img src="src/images/bonus_x2.png" alt="X2 Bonus" class="bonusImage">
-                    <div class="bonusDescription">double points for 10 seconds</div>
-                </div>
-            </div> -->
-            
             <div id="closeInstructionsButton">CLOSE</div>
         </div>
     </div>
 
     <!-- Final Score Screen -->
     <div id="finalDiv">
-        <div id="scoreDiv1">SCORE</div>
+
         
-        <div id="scoreBreakdown">
-            <div class="scoreDetail">
-                <div class="scoreItem">
-                    <span class="scoreLabel">21</span>
-                    <div class="progressBar">
-                        <div class="progressFill" id="progress21"></div>
-                    </div>
-                    <div class="scoreValueContainer">
-                        <span class="graphScoreValue" id="score21">13</span>
-                    </div>
-                </div>
-                <div class="scoreItem">
-                    <span class="scoreLabel">20</span>
-                    <div class="progressBar">
-                        <div class="progressFill" id="progress20"></div>
-                    </div>
-                    <div class="scoreValueContainer">
-                        <span class="graphScoreValue" id="score20">0</span>
-                    </div>
-                </div>
-                <div class="scoreItem">
-                    <span class="scoreLabel">19</span>
-                    <div class="progressBar">
-                        <div class="progressFill" id="progress19"></div>
-                    </div>
-                    <div class="scoreValueContainer">
-                        <span class="graphScoreValue" id="score19">0</span>
-                    </div>
-                </div>
-                <div class="scoreItem">
-                    <span class="scoreLabel">18</span>
-                    <div class="progressBar">
-                        <div class="progressFill" id="progress18"></div>
-                    </div>
-                    <div class="scoreValueContainer">
-                        <span class="graphScoreValue" id="score18">0</span>
-                    </div>
-                </div>
-                <div class="scoreItem">
-                    <span class="scoreLabel">17</span>
-                    <div class="progressBar">
-                        <div class="progressFill" id="progress17"></div>
-                    </div>
-                    <div class="scoreValueContainer">
-                        <span class="graphScoreValue" id="score17">0</span>
-                    </div>
-                </div>
-                <div class="scoreItem">
-                    <span class="scoreLabel">16</span>
-                    <div class="progressBar">
-                        <div class="progressFill" id="progress16"></div>
-                    </div>
-                    <div class="scoreValueContainer">
-                        <span class="graphScoreValue" id="score16">0</span>
-                    </div>
-                </div>
-            </div>
-            <div class="scoreDetail">
-                <span class="bottomScoreLabel">CARD POINTS:</span>
-                <span class="scoreValue" id="cardPoints">0</span>
-            </div>
-            <div class="scoreDetail">
-                <span class="bottomScoreLabel">MULT BONUS:</span>
-                <span class="scoreValue" id="multBonus">0</span>
-            </div>
-            <div class="scoreDetail">
-                <span class="bottomScoreLabel bustText">BUSTS:</span>
-                <span class="scoreValue bustValue" id="bustCount">0</span>
-            </div>
-        </div>
-        <div id="scoreDiv2">0</div>
+
     </div>
-
-    <!-- loading -->
-
-    <div id="loadingImage"></div>
-    <div id="loadingBack"></div>
 
     <!-- Game Container -->
     <div id="gameContainer" style="display: none;">
         <div id="gameContent">
             <!-- Card Value Display -->
-            <div id="cardValue">17</div>
+            <div id="cardValue">0</div>
             
             <!-- Next Bonus Display -->
             <div id="nextBonus">BONUS MULT: +.2</div>
@@ -244,10 +163,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Fader elements -->
-    <div id="fader"></div>
-    <div id="faderBlack"></div>
 
 </body>
 </html>
