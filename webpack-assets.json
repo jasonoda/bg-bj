@@ -1,8 +1,12 @@
 {
   "index": {
-    "js": "index-bundle-7bc56a8928ee84ec94d7.js"
+    "js": "index-bundle-1749c332ff9282d49c13.js"
   },
   "": {
+    "js": [
+      "918-bundle-1749c332ff9282d49c13.js",
+      "862-bundle-1749c332ff9282d49c13.js"
+    ],
     "mp3": [
       "src/sounds/introMusic.mp3",
       "src/sounds/softBoom.mp3",
@@ -45,7 +49,6 @@
       "src/images/background.png"
     ],
     "jpg": "src/images/cardBack.jpg",
-    "js": "273-bundle-7bc56a8928ee84ec94d7.js",
     "svg": [
       "src/images/cards/KS.svg",
       "src/images/KH.svg",
