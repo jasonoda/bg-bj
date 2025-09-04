@@ -1,6 +1,6 @@
 {
   "index": {
-    "js": "index-bundle-629a56dace4b458359e9.js"
+    "js": "index-bundle-7bc56a8928ee84ec94d7.js"
   },
   "": {
     "mp3": [
@@ -40,10 +40,12 @@
       "src/sounds/click.mp3"
     ],
     "png": [
+      "src/images/tavern.png",
       "src/images/splashImage.png",
       "src/images/background.png"
     ],
     "jpg": "src/images/cardBack.jpg",
+    "js": "273-bundle-7bc56a8928ee84ec94d7.js",
     "svg": [
       "src/images/cards/KS.svg",
       "src/images/KH.svg",
@@ -108,12 +110,8 @@
       "src/images/cards/2B.svg"
     ],
     "ttf": "661aebe2b21204b02d9e.ttf",
-    "html": [
-      "game.html",
-      "index.html"
-    ],
+    "html": "game.html",
     "css": "edb23d6982e7f80d060d.css",
-    "ini": "src/sounds/desktop.ini",
-    "js": "src_starScores_json-bundle-629a56dace4b458359e9.js"
+    "ini": "src/sounds/desktop.ini"
   }
 }

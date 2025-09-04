@@ -36,18 +36,18 @@ export class Scene {
         this.updateTimer();
         
         // Ensure timer is visible from the start
-        const upperRightText = document.getElementById('upperRightText');
-        if (upperRightText) {
-            upperRightText.style.opacity = '1';
-            upperRightText.style.visibility = 'visible';
-            upperRightText.style.display = 'block';
-            console.log('Timer initialized with:', upperRightText.textContent);
+        const timeDisplay = document.getElementById('timeDisplay');
+        if (timeDisplay) {
+            timeDisplay.style.opacity = '1';
+            timeDisplay.style.visibility = 'visible';
+            timeDisplay.style.display = 'block';
+            console.log('Timer initialized with:', timeDisplay.textContent);
         }
         
         // Initialize score display
-        const upperLeftText = document.getElementById('upperLeftText');
-        if (upperLeftText) {
-            upperLeftText.textContent = '0';
+        const scoreDisplay = document.getElementById('scoreDisplay');
+        if (scoreDisplay) {
+            scoreDisplay.textContent = '0';
         }
         
         // Initialize bonus displays
@@ -170,7 +170,7 @@ export class Scene {
                     const finalPoints = Math.floor(basePoints * this.bonusMult);
                     this.score += finalPoints;
                     this.multBonus += (finalPoints - basePoints);
-                    document.getElementById('upperLeftText').textContent = this.score;
+                    document.getElementById('scoreDisplay').textContent = this.score;
                     console.log('Score updated to:', this.score);
                     
                     // Create score callout
@@ -279,6 +279,9 @@ export class Scene {
                         font-size: 120px;
                         font-weight: bold;
                         font-family: "Olympus Mount", sans-serif;
+                        padding-top: 60px;
+                        padding-top: calc(60px + env(safe-area-inset-top, 0px));
+                        transform: translateY(-30px);
                     `;
                     
                     countdownOverlay.appendChild(countdownText);
@@ -346,10 +349,10 @@ export class Scene {
                 // Waiting for play button to be clicked
                 this.updateTimer();
                 // Ensure timer is visible
-                const upperRightText = document.getElementById('upperRightText');
-                if (upperRightText) {
-                    upperRightText.style.opacity = '1';
-                    upperRightText.style.visibility = 'visible';
+                const timeDisplay = document.getElementById('timeDisplay');
+                if (timeDisplay) {
+                    timeDisplay.style.opacity = '1';
+                    timeDisplay.style.visibility = 'visible';
                 }
             }else if(this.gameAction==="new round"){
 
@@ -452,9 +455,9 @@ export class Scene {
                 
                 // Subtract 200 points for bust
                 this.score = Math.max(0, this.score - 200);
-                const upperLeftText = document.getElementById('upperLeftText');
-                if (upperLeftText) {
-                    upperLeftText.textContent = this.score;
+                const scoreDisplay = document.getElementById('scoreDisplay');
+                if (scoreDisplay) {
+                    scoreDisplay.textContent = this.score;
                 }
                 
                 // Track bust
@@ -559,9 +562,9 @@ export class Scene {
                 
                 // Only subtract 200 points if player busted (not if they stayed)
                 // The score is already calculated in the stay button click handler
-                const upperLeftText = document.getElementById('upperLeftText');
-                if (upperLeftText) {
-                    upperLeftText.textContent = this.score;
+                const scoreDisplay = document.getElementById('scoreDisplay');
+                if (scoreDisplay) {
+                    scoreDisplay.textContent = this.score;
                 }
                 
                 // Re-enable buttons
@@ -589,13 +592,13 @@ export class Scene {
     updateTimer() {
         const minutes = Math.floor(this.gameTime / 60);
         const seconds = Math.floor(this.gameTime % 60);
-        const upperRightText = document.getElementById('upperRightText');
+        const timeDisplay = document.getElementById('timeDisplay');
         // console.log('updateTimer called, gameTime:', this.gameTime, 'minutes:', minutes, 'seconds:', seconds);
-        if (upperRightText) {
-            upperRightText.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-            upperRightText.style.opacity = '1';
-            upperRightText.style.visibility = 'visible';
-            // console.log('Timer updated to:', upperRightText.textContent);
+        if (timeDisplay) {
+            timeDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            timeDisplay.style.opacity = '1';
+            timeDisplay.style.visibility = 'visible';
+            // console.log('Timer updated to:', timeDisplay.textContent);
         } else {
             console.log('Timer div not found');
         }

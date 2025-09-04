@@ -39,6 +39,66 @@ body{
     position: relative;
 }
 
+/* Tavern Background */
+#tavernBackground {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('./images/tavern.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: -1;
+    opacity: 0.7;
+}
+
+/* New Score and Time Display */
+#scoreTimeContainer {
+    position: fixed;
+    top: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 24px;
+    background: linear-gradient(to bottom, #1ac07d, #1a6d4b);
+    border-radius: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3000;
+    font-family: "Montserrat", sans-serif;
+    letter-spacing: 1px;
+}
+
+#scoreDisplay {
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+    flex: 1;
+    transform: translateY(-1px);
+}
+
+#scoreTimeDivider {
+    color: white;
+    font-size: 14px;
+    font-weight: 400;
+    text-align: center;
+    width: 10px;
+    transform: translateY(-2px);
+}
+
+#timeDisplay {
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+    flex: 1;
+    transform: translateY(-1px);
+}
+
 body::before {
     content: '';
     position: fixed;
@@ -582,28 +642,6 @@ body::before {
     z-index: 3001;
 }
 
-#upperLeftText{
-    top: 5px;
-    left: 10px;
-    color: white;
-    font-size: 9pt;
-    font-weight: 700;
-    letter-spacing: 1px;
-    font-family: "Montserrat", sans-serif;
-    z-index: 9001;
-}
-
-#upperRightText{
-    position: absolute;
-    top: 5px;
-    right: 10px;
-    color: white;
-    font-size: 9pt;
-    font-weight: 700;
-    letter-spacing: 1px;
-    font-family: "Montserrat", sans-serif;
-    z-index: 9000;
-}
 
 #targetDiv{
     top: 34px;
@@ -735,7 +773,7 @@ body::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(to bottom, rgba(76, 175, 80, 0.6), rgba(76, 175, 80, 0.1));
+    background: linear-gradient(to bottom, rgba(76, 175, 80, 0.3), rgba(76, 175, 80, 0.1));
     z-index: 111;
     transform-origin: bottom;
     transform: scaleY(0);
@@ -905,9 +943,9 @@ body::before {
     width: 99%;
     height: 100px;
     position: relative;
-    border: 2px solid rgba(255, 255, 0, 0.3);
+    /* border: 2px solid rgba(255, 255, 255, 1); */
     border-radius: 10px;
-    background: rgba(255, 255, 255, 0.1);
+    background: linear-gradient(to bottom, #4caf50, #388e3c);
 }
 
 .card-image {
