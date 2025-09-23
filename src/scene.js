@@ -31,6 +31,19 @@ export class Scene {
         this.multBonus = 0; // Points from bonus multiplier
         this.bustCount = 0;
         this.handCount = 1; // Number of hands played (start at 1)
+        
+        // Breadcrumb system for 15-second intervals
+        this.breadcrumbInterval = 15; // 15 seconds
+        this.lastBreadcrumbTime = 0;
+        this.currentIntervalScore = 0; // Score accumulated in current 15-second interval
+        this.currentIntervalHandScores = []; // Hand scores for current 15-second interval
+        this.breadcrumbCount = 0;
+        this.breadcrumbIntervalId = null; // For interval-based breadcrumbs
+        
+        // Properties needed for validation
+        this.gameScores = []; // Array to store all game scores
+        this.matches = 0; // Match count (not used in this game but required by validation)
+        this.part = 1; // Part number for breadcrumbs
 
         // Initialize timer display
         this.updateTimer();
@@ -104,7 +117,7 @@ export class Scene {
         // Hit button functionality
         if (newHitButton) {
             newHitButton.addEventListener('click', () => {
-                console.log('Hit button clicked, gameAction:', this.gameAction, 'dealingCard:', this.dealingCard);
+                // console.log('Hit button clicked, gameAction:', this.gameAction, 'dealingCard:', this.dealingCard);
                 if (this.gameAction === "game" && this.currentCards.length < 5) {
                     console.log('Calling dealCard()');
                     this.e.s.p('flip1');
@@ -123,7 +136,7 @@ export class Scene {
                         }, 300); // Wait for card animation to complete
                     }
                 } else {
-                    console.log('Game not in "game" state or max cards reached, cannot deal card');
+                    // console.log('Game not in "game" state or max cards reached, cannot deal card');
                 }
             });
         }
@@ -169,6 +182,8 @@ export class Scene {
                     // Apply bonus multiplier to score
                     const finalPoints = Math.floor(basePoints * this.bonusMult);
                     this.score += finalPoints;
+                    this.currentIntervalScore += finalPoints; // Track score for current breadcrumb interval
+                    this.currentIntervalHandScores.push(finalPoints); // Track hand score for current interval
                     this.multBonus += (finalPoints - basePoints);
                     document.getElementById('scoreDisplay').textContent = this.score;
                     console.log('Score updated to:', this.score);
@@ -336,8 +351,14 @@ export class Scene {
             // Timer countdown (only after game starts)
             if (this.gameAction !== "waiting") {
                 this.gameTime -= this.e.dt;
+                
                 if (this.gameTime <= 0) {
                     this.gameTime = 0;
+                    // Clear breadcrumb interval
+                    if (this.breadcrumbIntervalId) {
+                        clearInterval(this.breadcrumbIntervalId);
+                        this.breadcrumbIntervalId = null;
+                    }
                     // Time's up logic
                     this.showFinalScore();
                     this.action="end"
@@ -358,6 +379,18 @@ export class Scene {
 
                 console.log('Starting new round');
                 this.e.s.p('woosh1');
+                
+                // Start breadcrumb interval (every 15 seconds)
+                if (!this.breadcrumbIntervalId) {
+                    this.breadcrumbIntervalId = setInterval(() => {
+                        this.levelScore = this.currentIntervalScore; // Set levelScore for existing breadCrumb method
+                        this.gameScores = this.currentIntervalHandScores; // Set handScores for existing breadCrumb method
+                        this.breadCrumb(); // Use existing breadCrumb method
+                        this.currentIntervalScore = 0; // Reset for next interval
+                        this.currentIntervalHandScores = []; // Reset hand scores for next interval
+                        this.resetBreadCrumbTempData(); // Reset levelScore and levelStartTime
+                    }, this.breadcrumbInterval * 1000); // Convert to milliseconds
+                }
                 
                 // Hide card value initially
                 const cardValueElement = document.getElementById('cardValue');
@@ -454,7 +487,10 @@ export class Scene {
                 }, 50);
                 
                 // Subtract 200 points for bust
+                const bustPenalty = Math.min(200, this.score); // Don't go below 0
                 this.score = Math.max(0, this.score - 200);
+                this.currentIntervalScore -= bustPenalty; // Track bust penalty for current breadcrumb interval
+                this.currentIntervalHandScores.push(-bustPenalty); // Track bust penalty as negative hand score
                 const scoreDisplay = document.getElementById('scoreDisplay');
                 if (scoreDisplay) {
                     scoreDisplay.textContent = this.score;
@@ -600,7 +636,7 @@ export class Scene {
             timeDisplay.style.visibility = 'visible';
             // console.log('Timer updated to:', timeDisplay.textContent);
         } else {
-            console.log('Timer div not found');
+            // console.log('Timer div not found');
         }
     }
 
@@ -611,7 +647,7 @@ export class Scene {
         
         // Prevent multiple cards from being dealt simultaneously (except initial deal)
         if (this.dealingCard && !isInitialDeal) {
-            console.log('Already dealing a card, skipping');
+            // console.log('Already dealing a card, skipping');
             return;
         }
         
@@ -619,7 +655,7 @@ export class Scene {
             this.dealingCard = true;
         }
         
-        console.log('Dealing card, current cards:', this.currentCards.length);
+        // console.log('Dealing card, current cards:', this.currentCards.length);
         
         const card = this.generateRandomCard();
         this.currentCards.push(card);
@@ -784,17 +820,22 @@ export class Scene {
         
         // Use the new endScore system
         this.e.endScore.createFinalScoreOverlay(this.score, statsArray);
+        
+        // Send final validation breadcrumb
+        this.levelScore = this.currentIntervalScore; // Set the levelScore for the existing breadCrumb method
+        this.gameScores = this.currentIntervalHandScores; // Set handScores for existing breadCrumb method
+        this.breadCrumb("validate");
     }
 
     // Animate card in
     animateCardIn(card) {
         const currentCardsDiv = document.getElementById('currentCards');
         if (!currentCardsDiv) {
-            console.log('currentCards div not found');
+            // console.log('currentCards div not found');
             return;
         }
         
-        console.log('Creating card image for:', card.value + card.suit);
+        // console.log('Creating card image for:', card.value + card.suit);
         
         // Create new card
         const cardImg = document.createElement('img');
@@ -810,7 +851,7 @@ export class Scene {
         
         // Add to container but don't track in array yet
         currentCardsDiv.appendChild(cardImg);
-        console.log('Card image added to DOM');
+        // console.log('Card image added to DOM');
         
         // Calculate card positions based on the expected final number of cards
         const cardWidth = 60; // Approximate card width in pixels
@@ -847,7 +888,7 @@ export class Scene {
                     ease: "sine.out",
                     onComplete: () => {
                         this.cardElements.push(cardImg);
-                        console.log('First card positioned, total elements:', this.cardElements.length);
+                        // console.log('First card positioned, total elements:', this.cardElements.length);
                     }
                 });
             }, 25);
@@ -1322,9 +1363,9 @@ export class Scene {
             currentScore: this.score,
             levelScore: this.levelScore,
             levelTime: this.levelElapsedTime,
+            handScores: this.gameScores,
             matches: this.matches,
             part: this.part,
-            gameScores: this.gameScores,
             clientTimestamp: Date.now()
 
         }
@@ -1401,5 +1442,7 @@ export class Scene {
         this.resetBreadCrumbTempData();
 
     }
+
+
 
 }

@@ -35,12 +35,17 @@ module.exports = merge(commonConfig, {
             filename: 'index.html',
             inject: true
         }),
-        // new CopyWebpackPlugin({
-        //     patterns: [
-        //         { from: 'createGameData.js', to: 'createGameData.js' },
-        //         { from: 'validateGameData.js', to: 'validateGameData.js' },
-        //         { from: 'node_modules/crypto-js/crypto-js.js', to: 'node_modules/crypto-js/crypto-js.js' }
-        //     ]
-        // }),
+        new HtmlWebpackPlugin({
+            template: 'test-index.html',
+            filename: 'test-index.html',
+            inject: true
+        }),
+        new CopyWebpackPlugin({
+            patterns: [
+                { from: 'createGameData.js', to: 'createGameData.js' },
+                { from: 'validateGameData.js', to: 'validateGameData.js' },
+                { from: 'node_modules/crypto-js/crypto-js.js', to: 'node_modules/crypto-js/crypto-js.js' }
+            ]
+        }),
     ],
 });

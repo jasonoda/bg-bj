@@ -1,12 +1,8 @@
 {
   "index": {
-    "js": "index-bundle-1749c332ff9282d49c13.js"
+    "js": "index-bundle-efe656c12cd424c4405a.js"
   },
   "": {
-    "js": [
-      "918-bundle-1749c332ff9282d49c13.js",
-      "862-bundle-1749c332ff9282d49c13.js"
-    ],
     "mp3": [
       "src/sounds/introMusic.mp3",
       "src/sounds/softBoom.mp3",
@@ -49,6 +45,15 @@
       "src/images/background.png"
     ],
     "jpg": "src/images/cardBack.jpg",
+    "js": [
+      "31c5cfc0aeebabc12c9b.js",
+      "node_modules/crypto-js/crypto-js.js",
+      "63c74d7cba33ca6efe19.js",
+      "validateGameData.js",
+      "src_starScores_json-bundle-efe656c12cd424c4405a.js",
+      "createGameData.js",
+      "fab4426c18c60f502c22.js"
+    ],
     "svg": [
       "src/images/cards/KS.svg",
       "src/images/KH.svg",
@@ -113,7 +118,11 @@
       "src/images/cards/2B.svg"
     ],
     "ttf": "661aebe2b21204b02d9e.ttf",
-    "html": "game.html",
+    "html": [
+      "test-index.html",
+      "game.html",
+      "index.html"
+    ],
     "css": "edb23d6982e7f80d060d.css",
     "ini": "src/sounds/desktop.ini"
   }

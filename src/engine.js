@@ -104,8 +104,10 @@ export default class Engine{
                 this.loadOpacity=0;
             }
 
-            document.getElementById("loadingImage").style.opacity = this.loadOpacity+""
-            document.getElementById("loadingBack").style.opacity = this.loadOpacity+""
+            const loadingImage = document.getElementById("loadingImage");
+            const loadingBack = document.getElementById("loadingBack");
+            if (loadingImage) loadingImage.style.opacity = this.loadOpacity+""
+            if (loadingBack) loadingBack.style.opacity = this.loadOpacity+""
 
             this.scene.update();
             this.ui.update();

@@ -40,7 +40,7 @@ function validateGameData(initialGameData, breadcrumbs, finalGameData) {
   console.log("---------------------------------------");
 
   // ---------------------------------------------------------------------------------------------
-  // check score
+  // check score - breadcrumbs should add up to final score
   // ---------------------------------------------------------------------------------------------
 
   this.scoreCheck = 0;
@@ -48,47 +48,50 @@ function validateGameData(initialGameData, breadcrumbs, finalGameData) {
   for(var i=0; i<breadcrumbs.length; i++){
 
     var b = breadcrumbs[i]
+    console.log("Breadcrumb " + i + ":", b);
     if(b.levelScore!==undefined){
-         this.scoreCheck+=b.levelScore;
+         this.scoreCheck += b.levelScore;
+         console.log("Adding levelScore:", b.levelScore, "Total so far:", this.scoreCheck);
+         
+         // Check handScores add up to levelScore
+         if(b.handScores && Array.isArray(b.handScores)){
+             var handScoreTotal = 0;
+             for(var j=0; j<b.handScores.length; j++){
+                 handScoreTotal += b.handScores[j];
+             }
+             if(handScoreTotal !== b.levelScore){
+                 reasons.push("HAND SCORES DON'T MATCH LEVEL SCORE for breadcrumb " + i + ": " + handScoreTotal + " / " + b.levelScore);
+                 isValid = false;
+             }
+         }
+    } else {
+         console.log("No levelScore found in breadcrumb", i);
     }
+
+    console.log("SC "+i+" / "+this.scoreCheck);
    
   }
 
   if(this.scoreCheck!==finalGameData.score){
     
-    reasons.push("SCORE DID NOT ADD UP "+this.scoreCheck+" / "+finalGameData.score);
+    reasons.push("BREADCRUMB SCORES DID NOT ADD UP "+this.scoreCheck+" / "+finalGameData.score);
     isValid=false;
 
   }
   
-  // ---------------------------------------------------------------------------------------------
-  // check level times
-  // ---------------------------------------------------------------------------------------------
-
-   for(var i=0; i<breadcrumbs.length; i++){
-
-    if(breadcrumbs[i].levelTime>17.5){
-            
-        reasons.push("OVER TIME LIMIT "+breadcrumbs[i].levelTime);
-        isValid=false;
-
-    }
-   
-  }
-
   // ---------------------------------------------------------------------------------------------
   // check game scores
   // ---------------------------------------------------------------------------------------------
 
   this.scoreCheck = 0;
 
-  console.log(finalGameData.gameScores.length);
+  console.log(breadcrumbs.length);
 
-  for(var i=0; i<finalGameData.gameScores.length; i++){
+  for(var i=0; i<breadcrumbs.length; i++){
 
-    var b = finalGameData.gameScores[i]
-    if(b!==undefined){
-         this.scoreCheck+=b;
+    var b = breadcrumbs[i]
+    if(b.levelScore!==undefined){
+         this.scoreCheck+=b.levelScore;
     }
 
   }
@@ -101,12 +104,14 @@ function validateGameData(initialGameData, breadcrumbs, finalGameData) {
   }
   
   // ---------------------------------------------------------------------------------------------
-  // check if extra breadcrumbs were added
+  // check breadcrumb count - should be 8 (7 every 15 seconds + 1 final)
   // ---------------------------------------------------------------------------------------------
 
-  if( breadcrumbs.length > finalGameData.level){
+  var expectedBreadcrumbs = 8; // 120 seconds / 15 seconds = 8 intervals
 
-    reasons.push("TOO MANY BREADCRUMBS "+breadcrumbs.length+" / "+finalGameData.level);
+  if( breadcrumbs.length !== expectedBreadcrumbs){
+
+    reasons.push("INCORRECT BREADCRUMB COUNT "+breadcrumbs.length+" / "+expectedBreadcrumbs);
     isValid=false;
 
   }
@@ -117,7 +122,7 @@ function validateGameData(initialGameData, breadcrumbs, finalGameData) {
 
   console.log("---------------------------------------");
 
-  console.log(isValid);
+  console.log("IS VALID: "+isValid);
 
   for(var i=0; i<reasons.length; i++){
 
