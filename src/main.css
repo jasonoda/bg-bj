@@ -229,8 +229,8 @@ body::before {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: clamp(5px, 1vw, 10px);
-    max-width: 600px;
-    width: min(90vw, 600px);
+    max-width: 480px;
+    width: min(90vw, 480px);
     margin: 0;
     padding: clamp(10px, 2vw, 20px);
     justify-content: center;
@@ -893,7 +893,7 @@ body::before {
     flex-direction: column;
     align-items: center;
     gap: 5px;
-    max-width: 600px;
+    max-width: 480px;
     width: 90%;
 }
 
@@ -1053,3 +1053,30 @@ body::before {
 }
 
 
+:root{ --play-area-width: 500px; }
+
+.side-blocker{
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    background: #000000;
+    z-index: 442000; /* above gameplay UI */
+    pointer-events: none;
+}
+
+/* Left fills from left edge to start of center gap */
+#leftBlocker{
+    left: 0;
+    right: calc(50% + (var(--play-area-width) / 2));
+}
+
+/* Right fills from end of center gap to right edge */
+#rightBlocker{
+    left: calc(50% + (var(--play-area-width) / 2));
+    right: 0;
+}
+
+/* Hide blockers on mobile/tablet */
+@media (max-width: 768px){
+    #leftBlocker, #rightBlocker{ display: none; }
+}

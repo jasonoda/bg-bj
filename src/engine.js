@@ -25,6 +25,34 @@ export default class Engine{
             this.mobile = true;
         }
 
+        // Hide side blockers on tablets (UA-based detection, no measurements)
+        try {
+            const ua = navigator.userAgent || navigator.vendor || (window.opera ? window.opera : "");
+            const isIPad = /iPad/i.test(ua) || (/Macintosh/i.test(ua) && 'ontouchend' in document);
+            const isAndroidTablet = /Android/i.test(ua) && !/Mobile/i.test(ua);
+				const isAmazonOrOtherTablet = /(Kindle|Silk|KF[A-Z]{2,}|Tablet|PlayBook)/i.test(ua);
+				// Microsoft Surface / Windows tablets: Windows UA + touch capability OR explicit Surface token
+				const isWindowsTablet = (/Windows/i.test(ua) && (navigator.maxTouchPoints || 0) > 0 && !/Phone/i.test(ua)) || /Surface/i.test(ua) || /Tablet PC/i.test(ua);
+				this.isTablet = !!(isIPad || isAndroidTablet || isAmazonOrOtherTablet || isWindowsTablet);
+            if (this.isTablet) {
+                console.log("isTablet");
+                const leftBlocker = document.getElementById('leftBlocker');
+                const rightBlocker = document.getElementById('rightBlocker');
+                if (leftBlocker) leftBlocker.style.display = 'none';
+                if (rightBlocker) rightBlocker.style.display = 'none';
+					// Scale tavern background to viewport width on tablets
+					const tavernBg = document.getElementById('tavernBackground');
+					if (tavernBg) {
+						// Use width-based scaling instead of height-based
+						tavernBg.style.backgroundSize = '100% auto';
+						// Keep centered positioning
+						tavernBg.style.backgroundPosition = 'center';
+					}
+            }
+        } catch (e) {
+            // fail-safe: do nothing if UA parsing fails
+        }
+        
         this.action = "set up";
         this.count = 0;
 
@@ -56,7 +84,7 @@ export default class Engine{
             //---end--------------------------------------------------------------------------------------------------------------
 
             this.serverData = null;
-            
+
             window.addEventListener('message', event => {
 
                 try {
